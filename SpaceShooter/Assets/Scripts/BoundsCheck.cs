@@ -2,7 +2,7 @@
  * Created by: Akram Taghavi-Burris
  * Date Created: March 16, 2022
  * 
- * Last Edited by: Betzaida Ortiz Rivas
+ * Last Edited by: Cristian misla
  * Last Edited: 4/5/2022
  * 
  * Description: Checks if object is in bounds of camera

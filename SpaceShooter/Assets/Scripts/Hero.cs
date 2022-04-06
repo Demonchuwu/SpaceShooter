@@ -2,8 +2,8 @@
  * Created by: Akram Taghavi-Burris
  * Date Created: March 16, 2022
  * 
- * Last Edited by: Betzaida Ortiz Rivas
- * Last Edited: 4/5/2022
+ * Last Edited by: Cristian misla
+ * Last Edited: 4/6/2022
  * 
  * Description: Hero ship controller
 ****/
@@ -44,7 +44,9 @@ public class Hero : MonoBehaviour
     public float rollMult = -45;
     public float pitchMult = 30;
 
-
+    [Header("Projectile Settings")]
+    public GameObject projectilePrefab;
+    public float projectileSpeed = 40;
 
     [Space(10)]
 
@@ -109,9 +111,13 @@ public class Hero : MonoBehaviour
         //Rotate the shipt to make it feel more dynamic
         transform.rotation = Quaternion.Euler(yAxis * pitchMult, xAxis * rollMult, 0);
 
+        //Check for spacebar (far)
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            TempFire();
+        }
+
     }//end Update()
-
-
 
     //Taking Damage
     private void OnTriggerEnter(Collider other)
@@ -136,5 +142,15 @@ public class Hero : MonoBehaviour
             Debug.Log("Triggered by non-Enemy " + other.gameObject.name);
         }
     }//end OnTriggerEnter()
-
+    void TempFire()
+    {
+        GameObject projGo = Instantiate<GameObject>(projectilePrefab);
+        projGo.transform.position = transform.position;
+        Rigidbody rb = projGo.GetComponent<Rigidbody>();
+        rb.velocity = Vector3.up * projectileSpeed;
+    }
+    public void AddToScore(int value)
+    {
+        gm.UpdateScore(value);
+    }
 }

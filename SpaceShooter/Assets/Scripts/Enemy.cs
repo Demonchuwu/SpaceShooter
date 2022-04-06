@@ -2,8 +2,8 @@
  * Created by: Akram Taghavi-Burris
  * Date Created: March 16, 2022
  * 
- * Last Edited by: Betzaida Ortiz Rivas
- * Last Edited: 4/5/2022
+ * Last Edited by: Cristian misla
+ * Last Edited: 4/6/2022
  * 
  * Description: Enemy controller
 ****/
@@ -69,5 +69,22 @@ public class Enemy : MonoBehaviour
         pos = temPos; //position is equal to temporary position
 
     } // end Move()
+    private void OnCollisionEnter(Collision col)
+    {
+        GameObject otherGo = col.gameObject;
+        if (otherGo.tag == "ProjectileHero")
+        {
+            
+            Debug.Log("Enemy hit by projectile " + otherGo.name);
+            Destroy(otherGo);
+            Hero.SHIP.AddToScore(score);
+            Destroy(gameObject);
+
+        }
+        else
+        {
+            Debug.Log("Enemy hit by non-projectile " + otherGo.name);
+        }
+    }
 
 }
