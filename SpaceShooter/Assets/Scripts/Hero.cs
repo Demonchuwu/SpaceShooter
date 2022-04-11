@@ -3,7 +3,7 @@
  * Date Created: March 16, 2022
  * 
  * Last Edited by: Cristian misla
- * Last Edited: 4/6/2022
+ * Last Edited: 4/11/2022
  * 
  * Description: Hero ship controller
 ****/
@@ -38,6 +38,7 @@ public class Hero : MonoBehaviour
     #endregion
 
     GameManager gm; //reference to game manager
+    ObjectPull pool;
 
     [Header("Ship Movement")]
     public float speed = 10;
@@ -45,7 +46,8 @@ public class Hero : MonoBehaviour
     public float pitchMult = 30;
 
     [Header("Projectile Settings")]
-    public GameObject projectilePrefab;
+    public AudioClip projectileSound;
+    private AudioSource audioSource;
     public float projectileSpeed = 40;
 
     [Space(10)]
@@ -89,6 +91,8 @@ public class Hero : MonoBehaviour
     private void Start()
     {
         gm = GameManager.GM; //find the game manager
+        pool = ObjectPull.POOL;
+        audioSource = GetComponent<AudioSource>();
     }//end Start()
 
 
@@ -144,10 +148,19 @@ public class Hero : MonoBehaviour
     }//end OnTriggerEnter()
     void TempFire()
     {
-        GameObject projGo = Instantiate<GameObject>(projectilePrefab);
-        projGo.transform.position = transform.position;
-        Rigidbody rb = projGo.GetComponent<Rigidbody>();
-        rb.velocity = Vector3.up * projectileSpeed;
+        //GameObject projGo = Instantiate<GameObject>(projectilePrefab);
+        GameObject projGo = pool.GetObject();
+        if(projGo != null)
+        {
+            if(audioSource != null)
+            {
+                audioSource.PlayOneShot(projectileSound);
+            }
+            projGo.transform.position = transform.position;
+            Rigidbody rb = projGo.GetComponent<Rigidbody>();
+            rb.velocity = Vector3.up * projectileSpeed;
+        }
+
     }
     public void AddToScore(int value)
     {

@@ -3,7 +3,7 @@
  * Date Created: 4/6/2022
  * 
  * Last Edited by: Cristian misla
- * Last Edited: 4/6/2022
+ * Last Edited: 4/11/2022
  * 
  * Description: Create a pull of objects for reuse
 ****/
@@ -43,12 +43,32 @@ public class ObjectPull : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        for(int i = 0; i < poolStartSize; i++)
+        {
+            GameObject projectileGO = Instantiate(projectilePrefab);
+            projectile.Enqueue(projectileGO); //add to queue
+            projectileGO.SetActive(false); 
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public GameObject GetObject()
     {
-        
+        if(projectile.Count > 0)
+        {
+            GameObject gObject = projectile.Dequeue();
+            gObject.SetActive(true);
+            return gObject;
+        }
+        else
+        {
+            Debug.LogWarning("Out of objects, reloading...");
+            return null;
+        }
+    }//end GetObject()
+
+   public void ReturnObject(GameObject gObject)
+    {
+        projectile.Enqueue(gObject);
+        gObject.SetActive(false);
     }
 }
